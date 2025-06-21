@@ -1,0 +1,14 @@
+{% load jazzmin %}
+
+{% for field_name, field in filter_list.fields.items %}
+    <div class="filter-option">
+        <label for="{{ field_name }}">{{ field.label }}</label>
+        <select name="{{ field_name }}" class="select2">
+            {% for choice in field.choices %}
+                {% if choice.0 %}
+                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+{% endfor %}
