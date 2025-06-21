@@ -1,0 +1,67 @@
+{% load i18n static jazzmin %}
+
+{% if result_hidden_fields %}
+<div class="hiddenfields">
+    {% for item in result_hidden_fields %}{{ item }}{% endfor %}
+</div>
+{% endif %}
+
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function () {
+                $('#result_list').DataTable({
+                   "lengthMenu": [50, 100, 200, 500],
+                //    "columnDefs": [
+                //        { "orderable": false, "targets": [-1] }  // Disable sorting for the first and last columns
+                //    ],
+                   "language": {
+                        "searchPlaceholder": "Search Here..."  // Set the placeholder text for the search input
+                    }
+                });
+
+    });
+   </script> -->
+
+{% if results %}
+    <div class="card">
+        <div class="card-body table-responsive p-0 attendance-custom-row">
+            <table id="result_list" class="table table-striped">
+                <thead>
+                    <tr>
+                        {% for header in result_headers %}
+                        <th class="{% header_class header forloop %}" tabindex="0" rowspan="1" colspan="1">
+                            <div class="text">
+                                {% if header.sortable %}
+                                    <a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>
+                                {% else %}
+                                    <span>{{ header.text|capfirst }}</span>
+                                {% endif %}
+                                {% if header.sorted %}
+                                    <a href="{{ header.url_remove }}">
+                                        <div style="margin-top: .2em;" class="fa fa-times float-right"> </div>
+                                    </a>
+                                    {% if header.ascending %}
+                                        <i style="margin-top: .2em;" class="fa fa-sort-alpha-down"> </i>
+                                    {% else %}
+                                        <i style="margin-top: .2em;" class="fa fa-sort-alpha-up"> </i>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr role="row" class="{% cycle 'even' 'odd' %}">
+                        {% for item in result %}{{ item }}{% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endif %}
+
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script> -->

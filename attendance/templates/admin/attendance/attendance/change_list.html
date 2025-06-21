@@ -1,0 +1,107 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block content %}
+{% csrf_token %}
+<button id="reset-filter" >Reset</button>
+{% if cl.result_count %}
+        <div class="pagination" style="float: right;">
+            <span>Show
+                <select name="list_per_page" id="id_list_per_page" class="form-control input-sm">
+                    {% for option in list_per_page_choices %}
+                        <option value="{{ option }}" {% if option == cl.list_per_page %}selected{% endif %}>
+                            {{ option }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </span>
+        </div>
+{% endif %}
+
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.querySelector('#searchbar');
+        if (searchInput) {
+            searchInput.placeholder = 'User';
+        }
+    });
+        document.addEventListener("DOMContentLoaded", function () {
+            var button = document.getElementById("reset-filter");
+            button.addEventListener("click", function () {
+                // Get the current URL
+                var currentUrl = window.location.href;
+                // Remove query parameters related to filters
+                var urlWithoutFilters = removeFiltersFromUrl(currentUrl);
+                // Navigate to the modified URL
+                window.location.href = urlWithoutFilters;
+            });
+
+            function removeFiltersFromUrl(url) {
+                // Split the URL at '?' to separate the base URL and query parameters
+                var parts = url.split('?');
+
+                if (parts.length > 1) {
+                    // Get the base URL without query parameters
+                    var baseUrl = parts[0];
+
+                    // Create a new URL without filter-related query parameters
+                    var newUrl = baseUrl;
+
+                    // Replace the current URL with the new URL
+                    return newUrl;
+                } else {
+                    // No query parameters to remove, return the original URL
+                    return url;
+                }
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+    // Initialize the datepicker for "From Date" field
+    $("#id_from_date").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+    });
+
+    // Initialize the datepicker for "To Date" field
+    $("#id_to_date").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+    });
+});
+       document.addEventListener('DOMContentLoaded', function () {
+        var thElements = document.querySelectorAll('th');
+
+                // Loop through each <th>
+                thElements.forEach(function (th) {
+                    // Check if the text content of the <th> is "ID"
+                    if (th.textContent.trim() === "ID") {
+                        // Find the <i> element within the <th>
+                        var iconElement = th.querySelector('i');
+
+                        // Check if the icon element exists and has the class "fa-sort-alpha-down"
+                        if (iconElement && iconElement.classList.contains('fa-sort-alpha-down')) {
+                            // Change the class to "fa-sort-numeric-down"
+                            iconElement.classList.replace('fa-sort-alpha-down', 'fa-sort-numeric-down');
+                        }
+                    }
+                });
+        });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+    var searchField = document.querySelector("input[name=_changelist-search]");
+    if (searchField) {
+        searchField.setAttribute("autocomplete", "off");
+    }
+});
+
+    </script>
+
+
+
+    {{ block.super }}
+{% endblock %}
