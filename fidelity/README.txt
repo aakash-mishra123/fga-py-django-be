@@ -1,0 +1,1 @@
+Please upload SSL certificates provided by bank into SSL folder, pass params and Run into createOrder.php
