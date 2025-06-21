@@ -1,0 +1,16 @@
+{# widget_v2_checkbox.html #}
+{% include "captcha/includes/js_v2_checkbox.html" %}
+<div class="g-recaptcha"
+    {% for name, value in widget.attrs.items %}
+        {% if value is not False %}
+            {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
+        {% endif %}
+    {% endfor %}
+
+    data-sitekey="{{ widget.attrs.data_sitekey }}"
+    data-callback="onSubmit_{{ widget.attrs.data_widget_uuid }}"
+    data-size="{{ widget.attrs.data_size }}"
+>
+monbiqucjqckl
+</div>
+

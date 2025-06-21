@@ -1,0 +1,7 @@
+.btn.btn-success {
+    text-transform: capitalize;
+}
+
+a.btn.btn-success.float-right {
+    color: red;
+}
