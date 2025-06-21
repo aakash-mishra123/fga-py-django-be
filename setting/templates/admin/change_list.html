@@ -1,0 +1,21 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block content %}
+{% csrf_token %}
+
+{% if cl.result_count %}
+        <div class="pagination" style="float: right;">
+            <span>Show
+                <select name="list_per_page" id="id_list_per_page" class="form-control input-sm">
+                    {% for option in list_per_page_choices %}
+                        <option value="{{ option }}" {% if option == cl.list_per_page %}selected{% endif %}>
+                            {{ option }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </span>
+        </div>
+    {% endif %}
+
+{{ block.super }}
+{% endblock %}

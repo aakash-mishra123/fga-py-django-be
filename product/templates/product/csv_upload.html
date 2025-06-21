@@ -1,0 +1,14 @@
+<!-- product/csv_upload.html -->
+{% extends "base.html" %}
+
+{% block content %}
+{% csrf_token %}
+<h2>Upload CSV File</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit">Upload</button>
+</form>
+
+
+{% endblock %}

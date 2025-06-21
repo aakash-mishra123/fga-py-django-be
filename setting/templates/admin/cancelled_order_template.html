@@ -1,0 +1,254 @@
+
+
+{% extends "admin/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}  {# Add this line to load crispy_forms_tags for rendering the form #}
+{% load humanize %}  {# Add this line to load humanize for naturaltime filter #}
+{% block content %}
+
+
+<div class="backbutton-topseller">
+
+       <button id="back-button"  ><a href="/admin/setting/report/"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 73.4-73.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-128 128z"/></svg></a></button>
+<div class=""  >
+    <h4 >Cancel Orders</h4>
+  </div>
+  <button id="reset-filter">Reset</button>
+
+</div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var button = document.getElementById("reset-filter");
+            button.addEventListener("click", function () {
+                // Get the current URL
+                var currentUrl = window.location.href;
+
+                // Remove query parameters related to filters
+                var urlWithoutFilters = removeFiltersFromUrl(currentUrl);
+
+                // Navigate to the modified URL
+                window.location.href = urlWithoutFilters;
+            });
+
+            function removeFiltersFromUrl(url) {
+                // Split the URL at '?' to separate the base URL and query parameters
+                var parts = url.split('?');
+
+                if (parts.length > 1) {
+                    // Get the base URL without query parameters
+                    var baseUrl = parts[0];
+
+                    // Create a new URL without filter-related query parameters
+                    var newUrl = baseUrl;
+
+                    // Replace the current URL with the new URL
+                    return newUrl;
+                } else {
+                    // No query parameters to remove, return the original URL
+                    return url;
+                }
+            }
+            //  $('#result_list').DataTable();
+        });
+
+    //     document.addEventListener('DOMContentLoaded', function () {
+    //     var searchInput = document.querySelector('#searchbar');
+    //     if (searchInput) {
+    //         searchInput.placeholder = 'Name, Code';
+    //     }
+    // });
+
+            // Find the <i> element inside the <th>
+
+        document.addEventListener('DOMContentLoaded', function () {
+        var thElements = document.querySelectorAll('th');
+
+                // Loop through each <th>
+                thElements.forEach(function (th) {
+                    // Check if the text content of the <th> is "ID"
+                    if (th.textContent.trim() === "ID") {
+                        // Find the <i> element within the <th>
+                        var iconElement = th.querySelector('i');
+
+                        // Check if the icon element exists and has the class "fa-sort-alpha-down"
+                        if (iconElement && iconElement.classList.contains('fa-sort-alpha-down')) {
+                            // Change the class to "fa-sort-numeric-down"
+                            iconElement.classList.replace('fa-sort-alpha-down', 'fa-sort-numeric-down');
+                        }
+                    }
+                });
+        });
+
+document.addEventListener('DOMContentLoaded', function() {
+   // Get the element by ID
+const selectElement = document.getElementsByClassName('select2-results__option select2-results__option--selectable select2-results__option--selected select2-results__option--highlighted');
+ console.log(selectElement)
+// Check if the element exists
+if (selectElement) {
+    // Update the text content
+    selectElement.textContent = 'Select option';
+} else {
+    console.log('The element was not found.');
+}
+});
+
+
+    </script>
+
+    <form action="." id="searchForm"  class="accent-primaryform">
+        <!-- <div class="form-group">
+        <input type="text" id="searchInput" name="searchInput" placeholder="Order Id">
+    </div> -->
+
+    <div class="form-group">
+            <select id="filterSelect" name="store">
+                <option value="">Store</option>
+                {% for storeValue in user_orders.allstore %}
+                    <option value="{{ storeValue.id }}">{{storeValue.name}}</option>
+                {% endfor %}
+            </select>
+    </div>
+
+    <div class="form-group" style="position: relative;">
+        <input type="text" placeholder="From Date" id="fromDate" class="dateinput" name="fromDate">
+        <i class="date-icon fa fa-calendar" aria-hidden="true"></i>
+    </div>
+     <div class="form-group" style="position: relative;">
+        <input type="text" placeholder="To Date" id="toDate"  class="dateinput"  name="toDate">
+        <i class="date-icon fa fa-calendar" aria-hidden="true"></i>
+       </div>
+
+     <div class="form-group">
+        <div class="controls">
+           <button type="submit" class="button" >Search</button>
+        </div>
+    </div>
+     <div class="form-group">
+        <div class="controls">
+         <button type="button" class="button" id="generateReportButton">Generate Report</button>
+    </div>
+   </div>
+    </form>
+    <div class="col-12">
+         <div>
+        Total Canceled Orders:<b>{{ user_orders.user_orders_count }}</b>
+            </div>
+        <div class="card">
+            <div class="card-body table-responsive p-0">
+                <table id="result_list" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" data-order="0">
+                                <div class="text"><span>Order id</span></div>
+                            </th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" data-order="0">
+                                <div class="text"><span>Subddtotal</span></div>
+                            </th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" data-order="0">
+                                <div class="text"><span>Total</span></div>
+                            </th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1"data-order="0">
+                                <div class="text"><span>Quantity</span></div>
+                            </th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" data-order="0">
+                                <div class="text"><span>created_at</span></div>
+                            </th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" data-order="0">
+                                <div class="text"><span>Cancel Reason</span></div>
+                            </th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                <div class="text"><span>Status</span></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                     {% if user_orders.user_orders %}
+                        {% for order in user_orders.user_orders %}
+
+                            <tr role="row" class="">
+                                <td>{{ order.order_id }}</td>
+                                <td>{{ order.subtotal }}</td>
+                                <td>{{ order.total }}</td>
+                                <td>{{ order.order_quantity }}</td>
+                                <td>{{ order.created_at }}</td>
+                                <td>{{ order.cancel_reason }}</td>
+                                <td>{{ order.order_status }}</td>
+                            </tr>
+
+                        {% endfor %}
+                                               {% else %}
+
+        <td colspan="8">No Data Found</td>
+    </tr>
+{% endif %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+ <br>
+
+
+
+            <br>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("generateReportButton").addEventListener("click", function () {
+            // Construct the URL with the extracted values
+            var currentUrl = window.location.href;
+            var urlParams = new URLSearchParams(currentUrl.split('?')[1]);
+
+// Construct the URL with the extracted query parameters
+var queryParams = urlParams.toString();
+
+            var url = "{% url 'customer:generate_pdf' %}?" + queryParams;
+            console.log(url)
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.responseType = "blob";
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Create a Blob from the response
+                    var blob = new Blob([xhr.response], { type: "application/pdf" });
+
+                    // Create a link and trigger a download
+                    var link = document.createElement("a");
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = "CancalOrder.pdf";
+                    link.click();
+                }
+            };
+
+            xhr.send();
+        });
+
+          var isDataTableInitialized = $.fn.DataTable.isDataTable('#result_list');
+
+    // Initialize DataTable only if it's not already initialized
+    if (!isDataTableInitialized) {
+        $('#result_list').DataTable({
+            "lengthMenu": [50, 100, 200, 500],
+            "columnDefs": [
+                { "orderable": false, "targets": [0, -1] }
+            ],
+            "language": {
+                "searchPlaceholder": "Search Here..."
+            }
+        });
+    }
+    });
+</script>
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="/jazzminCustom/common/js/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="/jazzminCustom/common/js/datatable.js"></script>
+
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block content %}
+{% csrf_token %}
+
+<a href="upload-csv/">Import Products</a>
+<button id="reset-filter">Reset</button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var button = document.getElementById("reset-filter");
+            button.addEventListener("click", function () {
+                // Get the current URL
+                var currentUrl = window.location.href;
+
+                // Remove query parameters related to filters
+                var urlWithoutFilters = removeFiltersFromUrl(currentUrl);
+
+                // Navigate to the modified URL
+                window.location.href = urlWithoutFilters;
+            });
+
+            function removeFiltersFromUrl(url) {
+                // Split the URL at '?' to separate the base URL and query parameters
+                var parts = url.split('?');
+
+                if (parts.length > 1) {
+                    // Get the base URL without query parameters
+                    var baseUrl = parts[0];
+
+                    // Create a new URL without filter-related query parameters
+                    var newUrl = baseUrl;
+
+                    // Replace the current URL with the new URL
+                    return newUrl;
+                } else {
+                    // No query parameters to remove, return the original URL
+                    return url;
+                }
+            }
+        });
+    </script>
+
+{{ block.super }}
+{% endblock %}

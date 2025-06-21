@@ -1,0 +1,99 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block content %}
+{% csrf_token %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<a href="upload-csv/">Import SubCategory</a>
+ <button id="reset-filter">Reset</button>
+
+{% if cl.result_count %}
+        <div class="pagination" style="float: right;">
+            <span>Show
+                <select name="list_per_page" id="id_list_per_page" class="form-control input-sm">
+                    {% for option in list_per_page_choices %}
+                        <option value="{{ option }}" {% if option == cl.list_per_page %}selected{% endif %}>
+                            {{ option }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </span>
+        </div>
+    {% endif %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var button = document.getElementById("reset-filter");
+            button.addEventListener("click", function () {
+                // Get the current URL
+                var currentUrl = window.location.href;
+
+                // Remove query parameters related to filters
+                var urlWithoutFilters = removeFiltersFromUrl(currentUrl);
+
+                // Navigate to the modified URL
+                window.location.href = urlWithoutFilters;
+            });
+
+            function removeFiltersFromUrl(url) {
+                // Split the URL at '?' to separate the base URL and query parameters
+                var parts = url.split('?');
+                if (parts.length > 1) {
+                    // Get the base URL without query parameters
+                    var baseUrl = parts[0];
+                    // Create a new URL without filter-related query parameters
+                    var newUrl = baseUrl;
+                    // Replace the current URL with the new URL
+                    return newUrl;
+                } else {
+                    // No query parameters to remove, return the original URL
+                    return url;
+                }
+            }
+              document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.querySelector('#searchbar');
+        if (searchInput) {
+            searchInput.placeholder = 'Name';
+        }
+
+        });
+
+
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+    var switches = document.querySelectorAll('.switch');
+    switches.forEach(function (statusElem) {
+        statusElem.addEventListener('click', function handleStatusChange() {
+            var status = statusElem.getAttribute('data-status');
+            var newStatus = status === '1' ? '0' : '1';
+            var baseUrl = window.location.href.split('/admin');
+            var url = baseUrl[0] + statusElem.getAttribute('data-url');
+            // Update the status via AJAX
+            // alert(url)
+            $.ajax({
+                url: url,
+                method: 'get',
+                data:{
+                    status:newStatus
+                },
+                success: function (data) {
+                    // Optionally handle success response
+                    console.log('Status updated successfully');
+                },
+                error: function () {
+                    // Optiona  lly handle error
+                    console.error('Error updating status');
+                }
+            });
+
+            // Update the data-status attribute for subsequent clicks
+            statusElem.setAttribute('data-status', newStatus);
+
+             statusElem.removeEventListener('click', handleStatusChange);
+        },{once:true});
+    });
+});
+
+    </script>
+
+{{ block.super }}
+{% endblock %}
